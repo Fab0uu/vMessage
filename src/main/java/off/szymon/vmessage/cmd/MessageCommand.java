@@ -68,6 +68,7 @@ public class MessageCommand {
                                             if (!ConfigManager.get().getConfig().getCommands().getMessage().getAllowMiniMessage()) {
                                                 message = MiniMessage.miniMessage().escapeTags(message);
                                             }
+                                            String time = Broadcaster.formatTimestamp();
 
                                             /* Placeholders */
 
@@ -97,17 +98,24 @@ public class MessageCommand {
                                             }
                                             senderFormat = senderFormat
                                                     .replace("%receiver%",receiver.getUsername())
-                                                    .replace("%message%",message);
+                                                    .replace("%message%",message)
+                                                    .replace("%time%", time);
                                             receiverFormat = receiverFormat
                                                     .replace("%receiver%",receiver.getUsername())
-                                                    .replace("%message%",message);
+                                                    .replace("%message%",message)
+                                                    .replace("%time%", time);
                                             // Sender and receiver prefixes and suffixes (if LuckPerms is installed)
                                             if (lp != null) {
                                                 if (senderPlayer != null) {
                                                     LuckPermsCompatibilityProvider.PlayerData senderData = lp.getMetaData(senderPlayer);
                                                     senderFormat = senderFormat
                                                             .replace("%sender-prefix%", senderData.metaData().getPrefix() != null ? senderData.metaData().getPrefix() : "")
-                                                            .replace("%sender-suffix%", senderData.metaData().getSuffix() != null ? senderData.metaData().getSuffix() : "");
+                                                            .replace("%sender-suffix%", senderData.metaData().getSuffix() != null ? senderData.metaData().getSuffix() : "")
+                                                            .replace("%sender-prefixes%", senderData.getAllPrefixes());
+                                                    receiverFormat = receiverFormat
+                                                            .replace("%sender-prefix%", senderData.metaData().getPrefix() != null ? senderData.metaData().getPrefix() : "")
+                                                            .replace("%sender-suffix%", senderData.metaData().getSuffix() != null ? senderData.metaData().getSuffix() : "")
+                                                            .replace("%sender-prefixes%", senderData.getAllPrefixes());
                                                     for (var entry : VMessagePlugin.get().getBroadcaster().getMetaPlaceholders().entrySet()) {
                                                         senderFormat = senderFormat.replace(
                                                                 entry.getKey(),
@@ -117,15 +125,22 @@ public class MessageCommand {
                                                 } else {
                                                     senderFormat = senderFormat
                                                             .replace("%sender-prefix%", "")
-                                                            .replace("%sender-suffix%", "");
+                                                            .replace("%sender-suffix%", "")
+                                                            .replace("%sender-prefixes%", "");
+                                                    receiverFormat = receiverFormat
+                                                            .replace("%sender-prefix%", "")
+                                                            .replace("%sender-suffix%", "")
+                                                            .replace("%sender-prefixes%", "");
                                                 }
                                                 LuckPermsCompatibilityProvider.PlayerData receiverData = lp.getMetaData(receiver);
                                                 senderFormat = senderFormat
                                                         .replace("%receiver-prefix%", receiverData.metaData().getPrefix() != null ? receiverData.metaData().getPrefix() : "")
-                                                        .replace("%receiver-suffix%", receiverData.metaData().getSuffix() != null ? receiverData.metaData().getSuffix() : "");
+                                                        .replace("%receiver-suffix%", receiverData.metaData().getSuffix() != null ? receiverData.metaData().getSuffix() : "")
+                                                        .replace("%receiver-prefixes%", receiverData.getAllPrefixes());
                                                 receiverFormat = receiverFormat
                                                         .replace("%receiver-prefix%", receiverData.metaData().getPrefix() != null ? receiverData.metaData().getPrefix() : "")
-                                                        .replace("%receiver-suffix%", receiverData.metaData().getSuffix() != null ? receiverData.metaData().getSuffix() : "");
+                                                        .replace("%receiver-suffix%", receiverData.metaData().getSuffix() != null ? receiverData.metaData().getSuffix() : "")
+                                                        .replace("%receiver-prefixes%", receiverData.getAllPrefixes());
                                                 for (var entry : VMessagePlugin.get().getBroadcaster().getMetaPlaceholders().entrySet()) {
                                                     senderFormat = senderFormat.replace(
                                                             entry.getKey(),
@@ -140,8 +155,17 @@ public class MessageCommand {
                                                 senderFormat = senderFormat
                                                         .replace("%sender-prefix%", "")
                                                         .replace("%sender-suffix%", "")
+                                                        .replace("%sender-prefixes%", "")
                                                         .replace("%receiver-prefix%", "")
-                                                        .replace("%receiver-suffix%", "");
+                                                        .replace("%receiver-suffix%", "")
+                                                        .replace("%receiver-prefixes%", "");
+                                                receiverFormat = receiverFormat
+                                                        .replace("%sender-prefix%", "")
+                                                        .replace("%sender-suffix%", "")
+                                                        .replace("%sender-prefixes%", "")
+                                                        .replace("%receiver-prefix%", "")
+                                                        .replace("%receiver-suffix%", "")
+                                                        .replace("%receiver-prefixes%", "");
                                             }
 
                                             Broadcaster bcaster = VMessagePlugin.get().getBroadcaster();

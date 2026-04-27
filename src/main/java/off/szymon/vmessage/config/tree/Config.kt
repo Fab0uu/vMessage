@@ -51,32 +51,34 @@ class MessagesConfig {
 @ConfigSerializable
 class ChatConfig {
     var enabled = true
-    @Comment("%player% - Player\n%message% - Message\n%server% - Player's Current Server\n%prefix% - LuckPerms Prefix\n%suffix% - LuckPerms Suffix")
+    @Comment("%player% - Player\n%message% - Message\n%server% - Player's Current Server\n%time% - Current time in HH:mm format\n%prefix% - LuckPerms Prefix\n%prefixes% - All LuckPerms Prefixes\n%suffix% - LuckPerms Suffix")
     var format = "%prefix%<b>%player%:</b> %message%"
+    @Comment("Whether to also send the synchronized chat message to players on the sender's current server")
+    var sendToCurrentServer = true
     @Comment("Whether to allow players to use MiniMessage in their messages")
     var allowMiniMessage = false
-    @Comment("The message to send when a muted player tries to send a message\n%player% - Player\n%message% - Message\n%server% - Player's Current Server\n%prefix% - LuckPerms Prefix\n%suffix% - LuckPerms Suffix\n%reason% - Reason for muting\n%end-date% - End date of the mute\n%moderator% - Moderator who muted the player")
+    @Comment("The message to send when a muted player tries to send a message\n%player% - Player\n%message% - Message\n%server% - Player's Current Server\n%time% - Current time in HH:mm format\n%prefix% - LuckPerms Prefix\n%prefixes% - All LuckPerms Prefixes\n%suffix% - LuckPerms Suffix\n%reason% - Reason for muting\n%end-date% - End date of the mute\n%moderator% - Moderator who muted the player")
     var mutedMessage = "<red>You are muted and cannot send messages.</red>"
 }
 
 @ConfigSerializable
 class JoinConfig {
     var enabled = true
-    @Comment("%player% - Player\n%server% - Player's Current Server\n%prefix% - LuckPerms Prefix\n%suffix% - LuckPerms Suffix")
+    @Comment("%player% - Player\n%server% - Player's Current Server\n%time% - Current time in HH:mm format\n%prefix% - LuckPerms Prefix\n%prefixes% - All LuckPerms Prefixes\n%suffix% - LuckPerms Suffix")
     var format = "<dark_gray>(<green>+<dark_gray>) <gray>%player%"
 }
 
 @ConfigSerializable
 class LeaveConfig {
     var enabled = true
-    @Comment("%player% - Player\n%server% - Player's Last Server\n%prefix% - LuckPerms Prefix\n%suffix% - LuckPerms Suffix")
+    @Comment("%player% - Player\n%server% - Player's Last Server\n%time% - Current time in HH:mm format\n%prefix% - LuckPerms Prefix\n%prefixes% - All LuckPerms Prefixes\n%suffix% - LuckPerms Suffix")
     var format = "<dark_gray>(<red>-<dark_gray>) <gray>%player%"
 }
 
 @ConfigSerializable
 class ChangeConfig {
     var enabled = true
-    @Comment("%player% - Player\n%old_server% - Player's Previous Server\n%new_server% - Player's New Server\n%prefix% - LuckPerms Prefix\n%suffix% - LuckPerms Suffix")
+    @Comment("%player% - Player\n%old_server% - Player's Previous Server\n%new_server% - Player's New Server\n%time% - Current time in HH:mm format\n%prefix% - LuckPerms Prefix\n%prefixes% - All LuckPerms Prefixes\n%suffix% - LuckPerms Suffix")
     var format = "<dark_gray>(<gold>•<dark_gray>) <gray>%player% <dark_gray>(<gold>%old_server%→%new_server%<dark_gray>)"
 }
 
@@ -92,7 +94,7 @@ class CommandsConfig {
 @ConfigSerializable
 class BroadcastConfig {
     var enabled = true
-    @Comment("%player% - Player\n%message% - Message\n%server% - Player's Current Server\n%prefix% - LuckPerms Prefix\n%suffix% - LuckPerms Suffix")
+    @Comment("%player% - Player\n%message% - Message\n%server% - Player's Current Server\n%time% - Current time in HH:mm format\n%prefix% - LuckPerms Prefix\n%prefixes% - All LuckPerms Prefixes\n%suffix% - LuckPerms Suffix")
     var format = "<b><#00ffff>%player%:</b> %message%"
     @Comment("If false, players will need the permission 'vmessage.command.broadcast' to use the /broadcast command\n" +
             "If true, all players can use the /broadcast command by default unless they have the permission 'vmessage.command.broadcast' set to false")
@@ -104,7 +106,7 @@ class BroadcastConfig {
 @ConfigSerializable
 class MessageConfig {
     var enabled = true
-    @Comment("%sender% - Sender\n%receiver% - Receiver\n%message% - Message\n%sender-server% - Sender's Current Server\n%receiver-server% - Receiver's Current Server\n%sender-prefix% - Sender's LuckPerms Prefix\n%sender-suffix% - Sender's LuckPerms Suffix\n%receiver-prefix% - Receiver's LuckPerms Prefix\n%receiver-suffix% - Receiver's LuckPerms Suffix\nCustom meta placeholders are currently not supported for this option")
+    @Comment("%sender% - Sender\n%receiver% - Receiver\n%message% - Message\n%time% - Current time in HH:mm format\n%sender-server% - Sender's Current Server\n%receiver-server% - Receiver's Current Server\n%sender-prefix% - Sender's LuckPerms Prefix\n%sender-prefixes% - Sender's all LuckPerms Prefixes\n%sender-suffix% - Sender's LuckPerms Suffix\n%receiver-prefix% - Receiver's LuckPerms Prefix\n%receiver-prefixes% - Receiver's all LuckPerms Prefixes\n%receiver-suffix% - Receiver's LuckPerms Suffix\nCustom meta placeholders are currently not supported for this option")
     var format = MessageFormatConfig()
     @Comment("Whether to allow players to use MiniMessage in their private messages")
     var allowMiniMessage = false

@@ -17,6 +17,10 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
 
+import java.util.Comparator;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class LuckPermsCompatibilityProvider {
 
     private final LuckPerms lp;
@@ -29,5 +33,13 @@ public class LuckPermsCompatibilityProvider {
         return new PlayerData(lp.getPlayerAdapter(Player.class).getMetaData(player));
     }
 
-    public record PlayerData(CachedMetaData metaData) {}
+    public record PlayerData(CachedMetaData metaData) {
+
+        public String getAllPrefixes() {
+            return metaData.getPrefixes().entrySet().stream()
+                    .sorted(Map.Entry.<Integer, String>comparingByKey(Comparator.reverseOrder()))
+                    .map(Map.Entry::getValue)
+                    .collect(Collectors.joining());
+        }
+    }
 }

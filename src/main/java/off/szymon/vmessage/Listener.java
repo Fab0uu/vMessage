@@ -57,7 +57,8 @@ public class Listener {
                             .replace("%server%", serverName)
                             .replace("%reason%", reason)
                             .replace("%end-date%", endDate)
-                            .replace("%moderator%", moderator);
+                            .replace("%moderator%", moderator)
+                            .replace("%time%", Broadcaster.formatTimestamp());
 
                     LuckPermsCompatibilityProvider lp = VMessagePlugin.get().getLuckPermsCompatibilityProvider();
 
@@ -65,7 +66,8 @@ public class Listener {
                         LuckPermsCompatibilityProvider.PlayerData data = lp.getMetaData(player);
                         msg = msg
                                 .replace("%suffix%", Optional.ofNullable(data.metaData().getSuffix()).orElse(""))
-                                .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""));
+                                .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""))
+                                .replace("%prefixes%", data.getAllPrefixes());
 
                         for (Map.Entry<String, String> entry : broadcaster.getMetaPlaceholders().entrySet()) {
                             msg = msg.replace(

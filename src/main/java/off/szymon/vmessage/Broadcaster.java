@@ -22,12 +22,16 @@ import off.szymon.vmessage.config.tree.TextComponentConfig;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 public class Broadcaster {
+
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     private final HashMap<String,String> serverAliases; // Server name, Server alias
     private final LuckPermsCompatibilityProvider lp;
@@ -53,12 +57,14 @@ public class Broadcaster {
         msg = msg
                 .replace("%player%", player.getUsername())
                 .replace("%message%", escapeMiniMessage(message))
-                .replace("%server%", parseAlias(player.getCurrentServer().get().getServerInfo().getName()));
+                .replace("%server%", parseAlias(player.getCurrentServer().get().getServerInfo().getName()))
+                .replace("%time%", formatTimestamp());
         if (lp != null) {
             LuckPermsCompatibilityProvider.PlayerData data = lp.getMetaData(player);
             msg = msg
                     .replace("%suffix%", Optional.ofNullable(data.metaData().getSuffix()).orElse(""))
-                    .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""));
+                    .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""))
+                    .replace("%prefixes%", data.getAllPrefixes());
 
             for (Map.Entry<String,String> entry : metaPlaceholders.entrySet()) {
                 String metaValue = Optional.ofNullable(data.metaData().getMetaValue(entry.getValue())).orElse("");
@@ -69,7 +75,30 @@ public class Broadcaster {
             }
         }
 
-        VMessagePlugin.get().getServer().sendMessage(deserializeTextComponents(msg));
+        Component component = deserializeTextComponents(msg);
+        if (ConfigManager.get().getConfig().getMessages().getChat().getSendToCurrentServer()) {
+            VMessagePlugin.get().getServer().sendMessage(component);
+            return;
+        }
+
+        String playerServer = player.getCurrentServer()
+                .map(server -> server.getServerInfo().getName())
+                .orElse(null);
+
+        if (playerServer == null) {
+            VMessagePlugin.get().getServer().sendMessage(component);
+            return;
+        }
+
+        for (Player receiver : VMessagePlugin.get().getServer().getAllPlayers()) {
+            String receiverServer = receiver.getCurrentServer()
+                    .map(server -> server.getServerInfo().getName())
+                    .orElse(null);
+
+            if (!playerServer.equalsIgnoreCase(receiverServer)) {
+                receiver.sendMessage(component);
+            }
+        }
     }
 
     public void join(Player player) {
@@ -83,13 +112,15 @@ public class Broadcaster {
         //noinspection OptionalGetWithoutIsPresent
         msg = msg
                 .replace("%player%", player.getUsername())
-                .replace("%server%", parseAlias(player.getCurrentServer().get().getServerInfo().getName()));
+                .replace("%server%", parseAlias(player.getCurrentServer().get().getServerInfo().getName()))
+                .replace("%time%", formatTimestamp());
 
         if (lp != null) {
             LuckPermsCompatibilityProvider.PlayerData data = lp.getMetaData(player);
             msg = msg
                     .replace("%suffix%", Optional.ofNullable(data.metaData().getSuffix()).orElse(""))
-                    .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""));
+                    .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""))
+                    .replace("%prefixes%", data.getAllPrefixes());
 
             for (Map.Entry<String,String> entry : metaPlaceholders.entrySet()) {
                 msg = msg.replace(
@@ -120,13 +151,15 @@ public class Broadcaster {
 
         msg = msg
                 .replace("%player%", player.getUsername())
-                .replace("%server%", serverName);
+                .replace("%server%", serverName)
+                .replace("%time%", formatTimestamp());
 
         if (lp != null) {
             LuckPermsCompatibilityProvider.PlayerData data = lp.getMetaData(player);
             msg = msg
                     .replace("%suffix%", Optional.ofNullable(data.metaData().getSuffix()).orElse(""))
-                    .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""));
+                    .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""))
+                    .replace("%prefixes%", data.getAllPrefixes());
 
             for (Map.Entry<String,String> entry : metaPlaceholders.entrySet()) {
                 msg = msg.replace(
@@ -150,14 +183,16 @@ public class Broadcaster {
         msg = msg
                 .replace("%player%", player.getUsername())
                 .replace("%new_server%", parseAlias(player.getCurrentServer().get().getServerInfo().getName()))
-                .replace("%old_server%", parseAlias(oldServer));
+                .replace("%old_server%", parseAlias(oldServer))
+                .replace("%time%", formatTimestamp());
 
         if (lp != null) {
             LuckPermsCompatibilityProvider.PlayerData data = lp.getMetaData(player);
 
             msg = msg
                     .replace("%suffix%", Optional.ofNullable(data.metaData().getSuffix()).orElse(""))
-                    .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""));
+                    .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""))
+                    .replace("%prefixes%", data.getAllPrefixes());
 
 
             for (Map.Entry<String,String> entry : metaPlaceholders.entrySet()) {
@@ -205,12 +240,14 @@ public class Broadcaster {
             }
             msg = msg
                 .replace("%player%", player.getUsername())
-                .replace("%server%", parseAlias(player.getCurrentServer().get().getServerInfo().getName()));
+                .replace("%server%", parseAlias(player.getCurrentServer().get().getServerInfo().getName()))
+                .replace("%time%", formatTimestamp());
             if (lp != null) {
                 LuckPermsCompatibilityProvider.PlayerData data = lp.getMetaData(player);
                 msg = msg
                         .replace("%suffix%", Optional.ofNullable(data.metaData().getSuffix()).orElse(""))
-                        .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""));
+                        .replace("%prefix%", Optional.ofNullable(data.metaData().getPrefix()).orElse(""))
+                        .replace("%prefixes%", data.getAllPrefixes());
 
                 for (Map.Entry<String,String> entry : metaPlaceholders.entrySet()) {
                     String metaValue = Optional.ofNullable(data.metaData().getMetaValue(entry.getValue())).orElse("");
@@ -225,8 +262,10 @@ public class Broadcaster {
                 .replace("%message%", message)
                 .replace("%player%", "Server")
                 .replace("%server%", "Server")
+                .replace("%time%", formatTimestamp())
                 .replace("%suffix%", "")
-                .replace("%prefix%", "");
+                .replace("%prefix%", "")
+                .replace("%prefixes%", "");
             for (String key : metaPlaceholders.keySet()) {
                 msg = msg.replace(key, "");
             }
@@ -248,6 +287,10 @@ public class Broadcaster {
 
     public HashMap<String, String> getMetaPlaceholders() {
         return metaPlaceholders;
+    }
+
+    public static String formatTimestamp() {
+        return LocalTime.now().format(TIME_FORMATTER);
     }
 
     private String escapeMiniMessage(String input) {

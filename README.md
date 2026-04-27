@@ -6,6 +6,26 @@
 
 **vMessage** is the best Velocity plugin for synchronizing chat and player events across your entire proxy network! It is designed for server administrators who want seamless, reliable, and configurable message syncing without unnecessary complexity.
 
+> [!NOTE]
+> ## Changes in this fork
+>
+> This fork keeps the base vMessage behavior and adds a few configuration-focused improvements:
+>
+> - **Aggregated LuckPerms prefixes:** `%prefixes%` displays all accumulated LuckPerms prefixes for a player, ordered from highest weight to lowest weight. The original `%prefix%` placeholder is unchanged and still displays LuckPerms' resolved highest prefix.
+> - **Private-message aggregated prefixes:** `/message` and `/reply` formats can use `%sender-prefixes%` and `%receiver-prefixes%`.
+> - **Timestamp placeholder:** `%time%` displays the proxy's current local time in `HH:mm` format. It is available in chat, muted messages, join/leave/change messages, broadcasts, `/message`, and `/reply` formats.
+> - **Local-server chat exclusion:** `messages.chat.send-to-current-server: false` prevents the synchronized proxy chat message from also being sent to players on the sender's current backend server.
+> - **Clean Gradle build fix:** Kotlin sources stored under `src/main/java` are explicitly registered so a clean build works reliably.
+>
+> Example chat format:
+>
+> ```yml
+> messages:
+>   chat:
+>     format: '<gray>[%time%]</gray> %prefixes% <b>%player%:</b> %message%'
+>     send-to-current-server: false
+> ```
+
 ## Features
 
 - **Global Chat Sync:** Instantly syncs chat messages across all servers connected to your Velocity proxy.

@@ -102,6 +102,14 @@ sourceSets {
     }
 }
 
+kotlin {
+    sourceSets {
+        named("main") {
+            kotlin.srcDir("src/main/java")
+        }
+    }
+}
+
 
 tasks.compileJava {
     dependsOn(generateVersion)

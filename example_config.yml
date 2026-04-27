@@ -13,9 +13,14 @@ messages:
     # %player% - Player
     # %message% - Message
     # %server% - Player's Current Server
+    # %time% - Current time in HH:mm format
     # %prefix% - LuckPerms Prefix
+    # %prefixes% - All LuckPerms Prefixes
     # %suffix% - LuckPerms Suffix
     format: '%prefix% <b>%player%:</b> %message%'
+    
+    # Whether to also send the synchronized chat message to players on the sender's current server
+    send-to-current-server: true
     
     # Whether to allow players to use MiniMessage in their messages
     allow-mini-message: false
@@ -24,7 +29,9 @@ messages:
     # %player% - Player
     # %message% - Message
     # %server% - Player's Current Server
+    # %time% - Current time in HH:mm format
     # %prefix% - LuckPerms Prefix
+    # %prefixes% - All LuckPerms Prefixes
     # %suffix% - LuckPerms Suffix
     # %reason% - Reason for muting
     # %end-date% - End date of the mute
@@ -35,7 +42,9 @@ messages:
     
     # %player% - Player
     # %server% - Player's Current Server
+    # %time% - Current time in HH:mm format
     # %prefix% - LuckPerms Prefix
+    # %prefixes% - All LuckPerms Prefixes
     # %suffix% - LuckPerms Suffix
     format: <dark_gray>(<green>+<dark_gray>) <gray>%player%
   leave:
@@ -43,7 +52,9 @@ messages:
     
     # %player% - Player
     # %server% - Player's Last Server
+    # %time% - Current time in HH:mm format
     # %prefix% - LuckPerms Prefix
+    # %prefixes% - All LuckPerms Prefixes
     # %suffix% - LuckPerms Suffix
     format: <dark_gray>(<red>-<dark_gray>) <gray>%player%
   change:
@@ -52,7 +63,9 @@ messages:
     # %player% - Player
     # %old_server% - Player's Previous Server
     # %new_server% - Player's New Server
+    # %time% - Current time in HH:mm format
     # %prefix% - LuckPerms Prefix
+    # %prefixes% - All LuckPerms Prefixes
     # %suffix% - LuckPerms Suffix
     format: <dark_gray>(<gold>•<dark_gray>) <gray>%player% <dark_gray>(<gold>%old_server%→%new_server%<dark_gray>)
 commands:
@@ -63,7 +76,9 @@ commands:
     # %player% - Player
     # %message% - Message
     # %server% - Player's Current Server
+    # %time% - Current time in HH:mm format
     # %prefix% - LuckPerms Prefix
+    # %prefixes% - All LuckPerms Prefixes
     # %suffix% - LuckPerms Suffix
     format: <b><#00ffff>%player%:</b> %message%
     
@@ -82,11 +97,14 @@ commands:
     # %sender% - Sender
     # %receiver% - Receiver
     # %message% - Message
+    # %time% - Current time in HH:mm format
     # %sender-server% - Sender's Current Server
     # %receiver-server% - Receiver's Current Server
     # %sender-prefix% - Sender's LuckPerms Prefix
+    # %sender-prefixes% - Sender's all LuckPerms Prefixes
     # %sender-suffix% - Sender's LuckPerms Suffix
     # %receiver-prefix% - Receiver's LuckPerms Prefix
+    # %receiver-prefixes% - Receiver's all LuckPerms Prefixes
     # %receiver-suffix% - Receiver's LuckPerms Suffix
     # Custom meta placeholders are currently not supported for this option
     format:
